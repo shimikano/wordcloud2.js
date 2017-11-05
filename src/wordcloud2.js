@@ -188,6 +188,8 @@ if (!window.clearImmediate) {
       clearCanvas: true,
       backgroundColor: '#fff',  // opaque white = rgba(255, 255, 255, 1)
 
+      spanCustomizer: function(span, item) {},
+
       gridSize: 8,
       drawOutOfBound: false,
       origin: null,
@@ -704,7 +706,7 @@ if (!window.clearImmediate) {
 
     /* Actually draw the text on the grid */
     var drawText = function drawText(gx, gy, info, word, weight,
-                                     distance, theta, rotateDeg, attributes) {
+                                     distance, theta, rotateDeg, attributes, item) {
 
       var fontSize = info.fontSize;
       var color;
@@ -801,6 +803,7 @@ if (!window.clearImmediate) {
             styleRules.color = color;
           }
           span.textContent = word;
+          settings.spanCustomizer(span, item);
           for (var cssProp in styleRules) {
             span.style[cssProp] = styleRules[cssProp];
           }
@@ -931,7 +934,7 @@ if (!window.clearImmediate) {
 
         // Actually put the text on the canvas
         drawText(gx, gy, info, word, weight,
-                 (maxRadius - r), gxy[2], rotateDeg, attributes);
+                 (maxRadius - r), gxy[2], rotateDeg, attributes, item);
 
         // Mark the spaces on the grid as filled
         updateGrid(gx, gy, gw, gh, info, item);
